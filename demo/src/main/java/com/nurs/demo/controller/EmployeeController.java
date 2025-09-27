@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nurs.demo.model.Employee;
 import com.nurs.demo.service.EmployeeService;
 
+import jakarta.validation.Valid;
+
 @RestController
-@RequestMapping("/api/employee")
+@RequestMapping("/employee")
 public class EmployeeController {
     private final EmployeeService employeeService;
 
@@ -32,7 +34,7 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee createEmployee(@RequestBody Employee employee) {
+    public Employee createEmployee(@Valid @RequestBody Employee employee) {
         return employeeService.savEmployee(employee);
     }
 
@@ -42,7 +44,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public Employee updaEmployee(@PathVariable Long id, @RequestBody Employee employee) {
+    public Employee updaEmployee(@PathVariable Long id, @Valid @RequestBody Employee employee) {
         return employeeService.updateEmployee(id, employee);
     }
 

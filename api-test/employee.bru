@@ -1,0 +1,23 @@
+meta {
+  name: employee
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/employee
+  body: none
+  auth: bearer
+}
+
+headers {
+  Bearer: 
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJudXJzeWFoIiwiaWF0IjoxNzU5MDA1OTc2LCJleHAiOjE3NTkwMDY4NzZ9.zAeCG4o4tHv92fpmjvRVdrzzhY9YJXPGxewZtCiEz8g
+}
+
+settings {
+  encodeUrl: true
+}

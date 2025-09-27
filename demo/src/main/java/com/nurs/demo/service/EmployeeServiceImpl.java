@@ -4,19 +4,17 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.nurs.demo.exception.ResourceNotFoundException;
+import com.nurs.demo.exception.CustomException;
 import com.nurs.demo.model.Employee;
 import com.nurs.demo.repository.EmployeeRepository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.val;
 
 @Service
+@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
-
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
 
     @Override
     public void deleteEmployee(Long id) {
@@ -32,11 +30,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getEmployeeById(Long id) {
         return employeeRepository.findById(id)
-            .orElseThrow(()-> new ResourceNotFoundException("Employee id not found"));
+            .orElseThrow(()-> new CustomException("Employee id not found"));
     }
 
     @Override
     public Employee savEmployee(Employee employee) {
+        employeeRepository.findByEmailId(employee.getEmailId()).ifPresent(u->{
+            throw new CustomException("emailId already registered");
+        });
+
         return employeeRepository.save(employee);
     }
 
