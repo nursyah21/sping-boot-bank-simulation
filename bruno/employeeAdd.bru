@@ -1,0 +1,27 @@
+meta {
+  name: employeeAdd
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/employee
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{base_url}}
+}
+
+body:json {
+  {
+      "firstName": "nursyassh",
+      "lastName": "nursyahjaya",
+      "emailId": "asdsad@asdssad"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

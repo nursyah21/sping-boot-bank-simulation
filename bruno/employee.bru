@@ -1,0 +1,19 @@
+meta {
+  name: employee
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/employee
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{secret}}
+}
+
+settings {
+  encodeUrl: true
+}
