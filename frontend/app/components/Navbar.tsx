@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 export function Navbar(
@@ -13,14 +12,18 @@ export function Navbar(
   return (
     <nav className="container">
       <ul>
-        <li><Link href="/profile"
-          className={isActive('/profile') ? 'contrast' : ''}>
-          Profile
-        </Link></li>
-        <li><Link href="/employee"
-          className={isActive('/employee') ? 'contrast' : ''}>
-          Employee
-        </Link></li>
+        <li>
+          <a href="/profile"
+            className={isActive('/profile') ? 'contrast' : ''}>
+            Profile
+          </a>
+        </li>
+        <li>
+          <a href="/employee"
+            className={isActive('/employee') ? 'contrast' : ''}>
+            Employee
+          </a>
+        </li>
       </ul>
       <ul>
         <li><strong>{username}</strong></li>

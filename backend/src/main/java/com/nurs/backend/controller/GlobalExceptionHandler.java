@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,10 +21,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleValidationException(MethodArgumentNotValidException ex) {
 
-        val errors = ex.getBindingResult()
-            .getAllErrors().get(0).getDefaultMessage();
+        val errors = ex.getBindingResult().getAllErrors().get(0);
 
-        return Map.of("message", errors);
+        val fieldName = ((FieldError) errors).getField();
+        val message = errors.getDefaultMessage();
+
+        return Map.of("message", fieldName + " " + message);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

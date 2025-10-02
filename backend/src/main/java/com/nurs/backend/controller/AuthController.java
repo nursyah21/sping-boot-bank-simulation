@@ -24,13 +24,17 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public GenericResponse<Void> register(@Valid @RequestBody AuthRequest request) {
+    public GenericResponse<Void> register(
+        @Valid @RequestBody AuthRequest request
+    ) {
         authService.register(request);
         return new GenericResponse<>("create account success", null) ;
     }
 
     @PostMapping("/login")
-    public GenericResponse<Map<String, String>> login(@Valid @RequestBody AuthRequest request) {
+    public GenericResponse<Map<String, String>> login(
+        @Valid @RequestBody AuthRequest request
+    ) {
         return new GenericResponse<>(
             "login success", 
             authService.login(request)

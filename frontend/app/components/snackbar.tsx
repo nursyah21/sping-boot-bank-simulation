@@ -12,7 +12,7 @@ export function Snackbar(
       setIsVisible(true)
       const timer = setTimeout(()=>{
         setIsVisible(false)
-      }, 4000)
+      }, 3000)
 
       return () => clearTimeout(timer)
     }

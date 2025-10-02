@@ -28,14 +28,12 @@ export async function handleSuccess(msg: string, path: string) {
 }
 
 export async function getErrorMessage() {
-    const message = cookies().get(ERROR_COOKIE)?.value
-    return message;
+    return cookies().get(ERROR_COOKIE)?.value
 }
 
 
 export async function getSuccessMessage() {
-    const message = cookies().get(SUCCESS_COOKIE)?.value
-    return message;
+    return cookies().get(SUCCESS_COOKIE)?.value
 }
 
 export async function getProfile() {

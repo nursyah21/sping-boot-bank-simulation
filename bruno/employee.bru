@@ -5,9 +5,15 @@ meta {
 }
 
 get {
-  url: {{base_url}}/employee
+  url: {{base_url}}/employee?size=1
   body: none
   auth: bearer
+}
+
+params:query {
+  size: 1
+  ~page: 1
+  ~sort: id
 }
 
 auth:bearer {

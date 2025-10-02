@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
-import { Navbar } from "./navbar"
 import { getProfile } from "../actions"
+import { Navbar } from "../components/Navbar"
 
 export default async function ProtectedLayout({
     children
@@ -16,7 +16,7 @@ export default async function ProtectedLayout({
     return (
         <>
             <Navbar username={profile} />
-            <hr/>
+            <hr />
             {children}
         </>
     )

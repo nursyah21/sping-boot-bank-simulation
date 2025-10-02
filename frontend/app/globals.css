@@ -33,6 +33,28 @@
     margin-top: 2rem;
 }
 
+.row {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.pagination {
+    width: fit-content;
+    margin: 0 auto;
+    display: flex;
+}
+
+.pagination a {
+    display: flex;
+    margin-top: 1rem;
+    justify-content: center;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
 .alert {
     padding: 1rem;
     border-radius: 0.5rem;

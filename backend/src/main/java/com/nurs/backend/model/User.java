@@ -3,25 +3,24 @@ package com.nurs.backend.model;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
+@SQLDelete(sql = "UPDATE users SET is_deleted = true WHERE id=?")
+@SQLRestriction("is_deleted = false")
 @Table(name = "users")
-public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class User extends BaseModel implements UserDetails {
     @Column(unique = true, nullable = false)
     private String username;
 

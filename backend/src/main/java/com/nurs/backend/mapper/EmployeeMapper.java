@@ -11,8 +11,14 @@ import com.nurs.backend.model.Employee;
 public interface EmployeeMapper {
 
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
+  @Mapping(target = "deleted", ignore = true)
   Employee toEntity(EmployeeRequest dto);
   
   @Mapping(target = "id", ignore = true)
-  void updateEmployeeFromDto(EmployeeRequest dto, @MappingTarget Employee entity);
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
+  @Mapping(target = "deleted", ignore = true)
+  void updateFromDto(EmployeeRequest dto, @MappingTarget Employee entity);
 }

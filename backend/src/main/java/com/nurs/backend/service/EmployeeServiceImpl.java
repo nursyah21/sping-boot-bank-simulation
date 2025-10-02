@@ -1,7 +1,7 @@
 package com.nurs.backend.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.nurs.backend.dto.EmployeeRequest;
@@ -26,8 +26,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+    public Page<Employee> getAllEmployees(Pageable pageable, String keyword) {
+        if(keyword != null && !keyword.isBlank()){
+            return employeeRepository.search(keyword, pageable);
+        }
+        return employeeRepository.findAll(pageable);
     }
 
     @Override
@@ -38,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee saveEmployee(EmployeeRequest employee) {
-        employeeRepository.findByEmailId(employee.getEmailId()).ifPresent(u->{
+        employeeRepository.findByEmailIdIgnoringSoftDelete(employee.getEmailId()).ifPresent(u->{
             throw new CustomException("emailId already registered");
         });
 
@@ -50,11 +53,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee updateEmployee(Long id, EmployeeRequest employee) {
         val _employee = getEmployeeById(id);
-        employeeRepository.findByEmailIdAndIdNot(employee.getEmailId(), id).ifPresent(u->{
+        employeeRepository.findByEmailIdAndIdNotIgnoringSoftDelete(employee.getEmailId(), id).ifPresent(u->{
             throw new CustomException("emailId already registered");
         });
 
-        employeeMapper.updateEmployeeFromDto(employee, _employee);
+        employeeMapper.updateFromDto(employee, _employee);
 
         return employeeRepository.save(_employee);
     }

@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { getErrorMessage, getSuccessMessage } from "@/app/actions";
-import { redirectToLogin, signUp } from "../actions";
+import { signUp } from "../actions";
 
 export default async function Register() {
   const errorMessage = await getErrorMessage()
@@ -13,9 +12,9 @@ export default async function Register() {
           <div>
             <hgroup>
               <h1>{successMessage}</h1>
-              <form className="container" action={redirectToLogin}>
-                <button type="submit">Go to login page</button>
-              </form>
+              <div className="container">
+                <a href="/login" role="button">Go to login page</a>
+              </div>
             </hgroup>
           </div>
         </article>
@@ -68,7 +67,7 @@ export default async function Register() {
 
           </form>
           <p className="text-center">
-            <Link href="/login">Already have account</Link>
+            <a href="/login">Already have account</a>
           </p>
         </div>
       </article>

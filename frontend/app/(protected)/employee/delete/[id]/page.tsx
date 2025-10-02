@@ -1,6 +1,6 @@
 import { getErrorMessage } from "@/app/actions";
 import { getEmployee, mutationEmployee } from "../../actions";
-import type { Employee, Params } from "../../type";
+import { Employee, Params } from "@/app/type";
 
 export default async function DeleteEmployee(
   { params }: Params

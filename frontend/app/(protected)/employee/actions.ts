@@ -4,13 +4,23 @@ import { handleError, handleSuccess } from "@/app/actions"
 import { AUTH_COOKIE, BACKEND_URL } from "@/app/constants"
 import { cookies, headers } from "next/headers"
 import { redirect } from "next/navigation"
-import { Employee } from "./type"
 
-export async function getEmployee(id?: number) {
+export async function getEmployee(
+    id?: number,
+    searchParams?: {
+        keyword?: string,
+        page?: string
+    }
+) {
     let url = BACKEND_URL + '/employee'
     if (id) {
         url += '/' + id
     }
+
+    const keyword = searchParams?.keyword ?? '';
+    const page = Number(searchParams?.page);
+
+    url += "?size=5" + "&keyword=" + keyword + "&page=" + (page-1)
 
     const res = await fetch(url, {
         method: 'get',
@@ -24,8 +34,7 @@ export async function getEmployee(id?: number) {
     }
 
     const { data } = await res.json()
-
-    return data as Employee | Employee[]
+    return data
 }
 
 export async function mutationEmployee(formData: FormData) {
@@ -52,8 +61,8 @@ export async function mutationEmployee(formData: FormData) {
     }
 
     const res = await fetch(url, options)
-    const {message} = await res.json()
-    
+    const { message } = await res.json()
+
     if (!res.ok) {
         handleError(message, referer)
         return

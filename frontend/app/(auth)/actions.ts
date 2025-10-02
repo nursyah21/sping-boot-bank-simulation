@@ -3,12 +3,8 @@
 import { handleError, handleSuccess } from "@/app/actions"
 import { AUTH_COOKIE, BACKEND_URL } from "@/app/constants"
 import { jwtDecode } from "jwt-decode"
-import { redirect } from "next/navigation"
 import { cookies } from "next/headers"
-
-export async function redirectToLogin() {
-    redirect("/login")
-}
+import { redirect } from "next/navigation"
 
 export async function signUp(formData: FormData) {
     const username = formData.get('username')
