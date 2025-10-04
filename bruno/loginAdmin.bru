@@ -1,0 +1,26 @@
+meta {
+  name: loginAdmin
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/auth/login
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{secret}}
+}
+
+body:json {
+  {
+    "username":"admin",
+    "password":"mypassword"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,25 @@
+meta {
+  name: promoteToAdmin
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{base_url}}/admin/promote
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{secret}}
+}
+
+body:json {
+  {
+    "username": "nursyah"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,4 +1,4 @@
-package com.nurs.backend.service;
+package com.nurs.backend.service.security;
 
 import java.security.Key;
 import java.util.Date;

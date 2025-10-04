@@ -5,12 +5,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Value;
 
 @Value
-public class AuthRequest {
-    @NotBlank(message = "username is required")
+public class PromoteToAdmin {
+    @NotBlank
     @Size(min = 4, max = 20)
     private String username;
-    
-    @NotBlank(message = "password is required")
-    @Size(min = 8, max = 100)
-    private String password;
 }

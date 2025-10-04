@@ -1,0 +1,23 @@
+meta {
+  name: accountDeactivate
+  type: http
+  seq: 9
+}
+
+delete {
+  url: {{base_url}}/admin/account/deactivate/1
+  body: none
+  auth: bearer
+}
+
+headers {
+  Bearer: 
+}
+
+auth:bearer {
+  token: {{secret}}
+}
+
+settings {
+  encodeUrl: true
+}

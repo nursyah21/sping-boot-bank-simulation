@@ -1,0 +1,26 @@
+meta {
+  name: transaction
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{base_url}}/transaction?keyword
+  body: none
+  auth: bearer
+}
+
+params:query {
+  keyword: 
+  ~page: 1
+  ~size: 0
+  ~sort: id
+}
+
+auth:bearer {
+  token: {{secret}}
+}
+
+settings {
+  encodeUrl: true
+}

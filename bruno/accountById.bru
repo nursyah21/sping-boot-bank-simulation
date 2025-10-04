@@ -1,17 +1,13 @@
 meta {
-  name: employeeDel
+  name: accountById
   type: http
   seq: 8
 }
 
-delete {
-  url: {{base_url}}/employee/13
+get {
+  url: {{base_url}}/admin/account/top-up/13
   body: none
   auth: bearer
-}
-
-headers {
-  Bearer: 
 }
 
 auth:bearer {

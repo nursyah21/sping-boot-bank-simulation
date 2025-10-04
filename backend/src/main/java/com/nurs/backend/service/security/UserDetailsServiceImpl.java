@@ -1,4 +1,4 @@
-package com.nurs.backend.service;
+package com.nurs.backend.service.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

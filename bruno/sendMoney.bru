@@ -1,0 +1,30 @@
+meta {
+  name: sendMoney
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{base_url}}/transaction
+  body: json
+  auth: bearer
+}
+
+headers {
+  Bearer: 
+}
+
+auth:bearer {
+  token: {{secret}}
+}
+
+body:json {
+  {
+    "amount": 10000000,
+    "destinationId": "5759482956"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

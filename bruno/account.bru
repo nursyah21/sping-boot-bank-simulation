@@ -1,17 +1,18 @@
 meta {
-  name: employee
+  name: account
   type: http
-  seq: 2
+  seq: 7
 }
 
 get {
-  url: {{base_url}}/employee?size=1
+  url: {{base_url}}/admin/account?size=0&keyword
   body: none
   auth: bearer
 }
 
 params:query {
-  size: 1
+  size: 0
+  keyword: 
   ~page: 1
   ~sort: id
 }
