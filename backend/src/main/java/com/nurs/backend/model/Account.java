@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -23,10 +22,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @SQLDelete(sql = "UPDATE accounts SET is_deleted = true WHERE id=?")
 @SQLRestriction("is_deleted = false")
-@Table(name = "accounts", indexes = {
-  @Index(name = "idx_created_at", columnList = "createdAt"),
-  @Index(name = "idx_is_deleted", columnList = "isDeleted")
-})
+@Table(name = "accounts")
 public class Account extends BaseModel {
     private BigDecimal balance = BigDecimal.ZERO;
 

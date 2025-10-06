@@ -1,5 +1,5 @@
 services:
-  db:
+  db_master:
     image: postgres:14-alpine
     restart: always
     environment:
@@ -9,7 +9,23 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql
+      - postgres_master_data:/var/lib/postgresql
+  
+  db_replica:
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_replica_data:/var/lib/postgresql
+    depends_on:
+      - db_master
+
 
 volumes:
-  postgres_data:
+  postgres_master_data:
+  postgres_replica_data:
