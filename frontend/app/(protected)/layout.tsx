@@ -1,23 +1,31 @@
-import { redirect } from "next/navigation"
-import { getProfile } from "../actions"
-import { Navbar } from "../components/Navbar"
+import { getProfile } from "../actions/getProfile"
 
 export default async function ProtectedLayout({
-    children
+  children
 }: {
-    children: React.ReactNode
+  children: React.ReactNode
 }) {
-    const profile = await getProfile()
+  const data = await getProfile()
 
-    if (!profile) {
-        redirect('/login')
-    }
-
-    return (
-        <>
-            <Navbar username={profile} />
-            <hr />
-            {children}
-        </>
-    )
+  return (
+    <>
+      <nav className="container">
+        <ul>
+          <li><a href="/" className="contrast">Home</a></li>
+          {
+            data?.roles === "ADMIN" &&
+            <li><a href="/account">Account</a></li>
+          }
+          <li><a href="/transaction">Transaction</a></li>
+        </ul>
+        <ul>
+          <li><strong>{data?.username}</strong></li>
+        </ul>
+      </nav>
+      <hr />
+      <main className="container">
+        {children}
+      </main>
+    </>
+  )
 }

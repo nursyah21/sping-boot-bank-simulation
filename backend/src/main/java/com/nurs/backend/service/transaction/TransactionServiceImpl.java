@@ -41,16 +41,16 @@ public class TransactionServiceImpl implements TransactionService {
     val destinationAccount = accountRepository.findByAccountId(request.getDestinationId())
         .orElseThrow(() -> new CustomException("Destination Id not found"));
 
-    if (!isAdmin && user.getAccount().getBalance() < request.getAmount()) {
+    if (!isAdmin && user.getAccount().getBalance().compareTo(request.getAmount()) < 0) {
       throw new CustomException("Insufficient balance in source account");
     }
 
     if (!isAdmin) {
-      val remainingBalance = user.getAccount().getBalance() - request.getAmount();
+      val remainingBalance = user.getAccount().getBalance().subtract(request.getAmount());
       user.getAccount().setBalance(remainingBalance);
     }
 
-    destinationAccount.setBalance(destinationAccount.getBalance() + request.getAmount());
+    destinationAccount.setBalance(destinationAccount.getBalance().add(request.getAmount()));
 
     accountRepository.save(user.getAccount());
     accountRepository.save(destinationAccount);
@@ -81,10 +81,21 @@ public class TransactionServiceImpl implements TransactionService {
         .anyMatch(role -> "ADMIN".equalsIgnoreCase(role.getName()));
     
     Page<Transaction> pageTransaction;
+    
+    val hasKeyword = keyword != null && !keyword.isBlank();
+
     if (isAdmin) {
-      pageTransaction = transactionRepository.searchByAdmin(keyword, pageable);
+      if(hasKeyword) {
+        pageTransaction = transactionRepository.searchByAdmin(keyword, pageable);
+      } else {
+        pageTransaction = transactionRepository.searchByAdmin(pageable);
+      }
     } else {
-      pageTransaction = transactionRepository.searchByAccountId(keyword, pageable, user.getAccount().getAccountId());
+      if(hasKeyword) {
+        pageTransaction = transactionRepository.searchByAccountId(keyword, pageable, user.getAccount().getAccountId());
+      } else {
+        pageTransaction = transactionRepository.searchByAccountId(pageable, user.getAccount().getAccountId());
+      }
     }
 
     return pageTransaction.map(transaction -> {

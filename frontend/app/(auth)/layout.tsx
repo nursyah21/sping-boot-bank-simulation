@@ -1,13 +1,14 @@
+import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
-import { getProfile } from "@/app/actions"
+import { AUTH_COOKIE } from "../constants"
 
 export default async function AuthLayout({
     children
 }: {
     children: React.ReactNode
 }) {
-    const profile = await getProfile()
-    if(profile) {
+    const token = cookies().get(AUTH_COOKIE)?.value
+    if (token) {
         redirect('/')
     }
 

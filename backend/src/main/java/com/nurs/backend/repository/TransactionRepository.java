@@ -19,6 +19,12 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
         "LOWER(da.accountId) LIKE LOWER(CONCAT(:keyword, '%')) )"
     )
     Page<Transaction> searchByAdmin(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query("SELECT t From Transaction t " +
+        "JOIN FETCH t.sourceAccount sa " +
+        "JOIN FETCH t.destinationAccount da "
+    )
+    Page<Transaction> searchByAdmin(Pageable pageable);
     
     @Query("SELECT t From Transaction t " +
         "JOIN FETCH t.sourceAccount sa " +
@@ -30,5 +36,14 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     )
     Page<Transaction> searchByAccountId(
       @Param("keyword") String keyword, Pageable pageable, @Param("accountId") String accountId
+    );
+
+      @Query("SELECT t From Transaction t " +
+        "JOIN FETCH t.sourceAccount sa " +
+        "JOIN FETCH t.destinationAccount da " +
+        "WHERE (sa.accountId = :accountId OR da.accountId = :accountId)"
+    )
+    Page<Transaction> searchByAccountId(
+       Pageable pageable, @Param("accountId") String accountId
     );
 }

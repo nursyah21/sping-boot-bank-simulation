@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Value;
 
 @Value
-public class PromoteToAdmin {
+public class PromoteToAdminRequest {
     @NotBlank
     @Size(min = 4, max = 20)
     private String username;

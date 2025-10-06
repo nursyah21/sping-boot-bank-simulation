@@ -17,6 +17,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -30,7 +31,10 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @SQLDelete(sql = "UPDATE users SET is_deleted = true WHERE id=?")
 @SQLRestriction("is_deleted = false")
-@Table(name = "users")
+@Table(name = "users", indexes = {
+  @Index(name = "idx_created_at", columnList = "createdAt"),
+  @Index(name = "idx_is_deleted", columnList = "isDeleted")
+})
 public class User extends BaseModel implements UserDetails {
     @Column(unique = true, nullable = false)
     private String username;

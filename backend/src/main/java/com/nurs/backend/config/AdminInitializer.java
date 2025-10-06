@@ -4,7 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import com.nurs.backend.dto.AuthRequest;
-import com.nurs.backend.dto.PromoteToAdmin;
+import com.nurs.backend.dto.PromoteToAdminRequest;
 import com.nurs.backend.model.Role;
 import com.nurs.backend.repository.RoleRepository;
 import com.nurs.backend.repository.UserRepository;
@@ -53,7 +53,7 @@ public class AdminInitializer implements CommandLineRunner {
 
       authService.register(authRequest);
 
-      val promoteToAdmin = new PromoteToAdmin("admin");
+      val promoteToAdmin = new PromoteToAdminRequest("admin");
       adminService.promoteToAdmin(promoteToAdmin);
 
       log.info("ADMIN default: username:admin password:mypassword");

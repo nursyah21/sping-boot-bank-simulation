@@ -36,6 +36,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final AccountIdGenerator accountIdGenerator;
 
+
     @Override
     public LoginResponse login(AuthRequest request) {
         try {
@@ -51,8 +52,8 @@ public class AuthServiceImpl implements AuthService {
                 });
 
         val jwtToken = jwtService.generateToken(username);
-
-        return new LoginResponse(jwtToken);
+                
+        return new LoginResponse(jwtToken, jwtService.getExpiration());
     }
 
     @Override

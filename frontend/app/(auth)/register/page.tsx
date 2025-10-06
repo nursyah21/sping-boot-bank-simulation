@@ -1,5 +1,5 @@
-import { getErrorMessage, getSuccessMessage } from "@/app/actions";
-import { signUp } from "../actions";
+import { getErrorMessage, getSuccessMessage } from "@/app/actions/message";
+import { signUp } from "../../actions/signUp";
 
 export default async function Register() {
   const errorMessage = await getErrorMessage()

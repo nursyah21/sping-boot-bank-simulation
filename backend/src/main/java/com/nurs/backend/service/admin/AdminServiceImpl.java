@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nurs.backend.dto.PromoteToAdmin;
+import com.nurs.backend.dto.PromoteToAdminRequest;
 import com.nurs.backend.dto.UserResponse;
 import com.nurs.backend.exception.CustomException;
 import com.nurs.backend.model.Role;
@@ -28,7 +28,7 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
-  public void promoteToAdmin(PromoteToAdmin request) {
+  public void promoteToAdmin(PromoteToAdminRequest request) {
     val user = userRepository.findByUsername(request.getUsername())
         .orElseThrow(() -> {
           throw new CustomException("Username not found");
@@ -43,7 +43,7 @@ public class AdminServiceImpl implements AdminService {
 
     val role = roleRepository.findByName("ADMIN")
         .orElseThrow(() -> {
-          throw new CustomException("Username not found");
+          throw new CustomException("ADMIN role not found");
         });
 
     val newRoleSet = new HashSet<Role>();
@@ -114,16 +114,20 @@ public class AdminServiceImpl implements AdminService {
   @Override
   public Page<UserResponse> getAllUsers(Pageable pageable, String keyword, Boolean isdeleted) {
     Page<User> userPage;
-    String _keyword = "";
 
-    if (keyword != null && !keyword.isBlank()) {
-      _keyword = keyword;
-    }
+    val hasKeyword = keyword != null && !keyword.isBlank();
 
     if (Boolean.TRUE.equals(isdeleted)) {
-      userPage = userRepository.searchFullProfileDataDeletedUsers(_keyword, pageable);
+      if (hasKeyword) {
+        userPage = userRepository.searchFullProfileDataDeletedUsers(pageable);
+      }
+      userPage = userRepository.searchFullProfileDataDeletedUsers(keyword, pageable);
     } else {
-      userPage = userRepository.searchFullProfileData(_keyword, pageable);
+      if (hasKeyword) {
+        userPage = userRepository.searchFullProfileData(keyword, pageable);
+      } else {
+        userPage = userRepository.searchFullProfileData(pageable);
+      }
     }
 
     return userPage.map(user -> {

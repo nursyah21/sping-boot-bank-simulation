@@ -1,7 +1,6 @@
 
-import Link from "next/link";
-import { signIn } from "../actions";
-import { getErrorMessage } from "@/app/actions";
+import { signIn } from "../../actions/signIn";
+import { getErrorMessage } from "@/app/actions/message";
 
 export default async function Login() {
   const errorMessage = await getErrorMessage()
@@ -39,7 +38,7 @@ export default async function Login() {
             <button type="submit">Log in</button>
           </form>
           <p>
-            <Link href="/register">Create new account</Link>
+            <a href="/register">Create new account</a>
           </p>
         </div>
       </article>

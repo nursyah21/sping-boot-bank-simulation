@@ -1,5 +1,7 @@
 package com.nurs.backend.model;
 
+import java.math.BigDecimal;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.validator.constraints.Length;
@@ -9,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -20,9 +23,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @SQLDelete(sql = "UPDATE accounts SET is_deleted = true WHERE id=?")
 @SQLRestriction("is_deleted = false")
-@Table(name = "accounts")
+@Table(name = "accounts", indexes = {
+  @Index(name = "idx_created_at", columnList = "createdAt"),
+  @Index(name = "idx_is_deleted", columnList = "isDeleted")
+})
 public class Account extends BaseModel {
-    private Long balance = 0L;
+    private BigDecimal balance = BigDecimal.ZERO;
 
     @Column(unique = true)
     @Length(max = 10, min = 10)

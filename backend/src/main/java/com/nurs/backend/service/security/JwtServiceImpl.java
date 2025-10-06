@@ -43,9 +43,15 @@ public class JwtServiceImpl implements JwtService {
             .setClaims(new HashMap<>())
             .setSubject(userDetails.getUsername())
             .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+            .setExpiration(getExpiration())
             .signWith(getSignInKey(), SignatureAlgorithm.HS256)
             .compact();
+    }
+
+
+    @Override
+    public Date getExpiration() {
+        return new Date(System.currentTimeMillis() + EXPIRATION_TIME);
     }
 
     @Override

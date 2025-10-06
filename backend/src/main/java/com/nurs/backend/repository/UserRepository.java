@@ -43,6 +43,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     )
     Page<User> searchFullProfileData(@Param("keyword") String keyword, Pageable pageable);
 
+    @Query("SELECT DISTINCT u FROM User u " +
+        "JOIN FETCH u.roles r " +
+        "LEFT JOIN FETCH u.account a "
+    )
+    Page<User> searchFullProfileData(Pageable pageable);
+
     @Query(value = "SELECT u.*, u.created_at AS createdAt FROM users u " +
         "LEFT JOIN accounts a ON a.user_id = u.id " +
         "WHERE u.is_deleted = true AND " +
@@ -52,4 +58,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
         nativeQuery = true
     )
     Page<User> searchFullProfileDataDeletedUsers(@Param("keyword") String keyword, Pageable pageable);
+
+    @Query(value = "SELECT u.*, u.created_at AS createdAt FROM users u " +
+        "LEFT JOIN accounts a ON a.user_id = u.id " +
+        "WHERE u.is_deleted = true",
+        nativeQuery = true
+    )
+    Page<User> searchFullProfileDataDeletedUsers(Pageable pageable);
 }

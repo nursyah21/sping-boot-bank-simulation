@@ -7,17 +7,13 @@ meta {
 post {
   url: {{base_url}}/auth/login
   body: json
-  auth: bearer
-}
-
-auth:bearer {
-  token: {{secret}}
+  auth: none
 }
 
 body:json {
   {
     "username":"user",
-    "password":"passsword"
+    "password":"password"
   }
 }
 

@@ -1,13 +1,17 @@
 meta {
   name: accountById
   type: http
-  seq: 8
+  seq: 9
 }
 
 get {
-  url: {{base_url}}/admin/account/top-up/13
+  url: {{base_url}}/admin/account/1?isDeleted=true
   body: none
   auth: bearer
+}
+
+params:query {
+  isDeleted: true
 }
 
 auth:bearer {

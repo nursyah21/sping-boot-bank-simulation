@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nurs.backend.dto.GenericResponse;
-import com.nurs.backend.dto.PromoteToAdmin;
+import com.nurs.backend.dto.PromoteToAdminRequest;
 import com.nurs.backend.dto.UserResponse;
 import com.nurs.backend.service.admin.AdminService;
 
@@ -72,7 +72,7 @@ public class AdminController {
 
   @PutMapping("/promote")
   public GenericResponse<Void> promoteToAdmin(
-      @Valid @RequestBody PromoteToAdmin request
+      @Valid @RequestBody PromoteToAdminRequest request
   ) {
     adminService.promoteToAdmin(request);
     return new GenericResponse<>("success promote user to admin", null);

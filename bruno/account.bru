@@ -1,18 +1,19 @@
 meta {
   name: account
   type: http
-  seq: 7
+  seq: 8
 }
 
 get {
-  url: {{base_url}}/admin/account?size=0&keyword
+  url: {{base_url}}/admin/account?isDeleted=false
   body: none
   auth: bearer
 }
 
 params:query {
-  size: 0
-  keyword: 
+  isDeleted: false
+  ~size: 
+  ~keyword: 
   ~page: 1
   ~sort: id
 }

@@ -13,15 +13,15 @@ export function Navbar(
     <nav className="container">
       <ul>
         <li>
-          <a href="/profile"
-            className={isActive('/profile') ? 'contrast' : ''}>
-            Profile
+          <a href="/"
+            className={isActive('/') ? 'contrast' : ''}>
+            Home
           </a>
         </li>
         <li>
-          <a href="/employee"
-            className={isActive('/employee') ? 'contrast' : ''}>
-            Employee
+          <a href="/profile"
+            className={isActive('/profile') ? 'contrast' : ''}>
+            profile
           </a>
         </li>
       </ul>

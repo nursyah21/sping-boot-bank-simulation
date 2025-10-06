@@ -28,7 +28,7 @@ export function SearchToolbar(
       <label htmlFor="page">
         {numberOfElements ?
           <>
-            {itemsLength + 1}-{numberOfElements} items from {totalElements}
+            {itemsLength + 1}-{itemsLength + numberOfElements} items from {totalElements}
           </> : <></>
         }
         <select
