@@ -138,9 +138,11 @@ npm run start
 
 5. run load testing 
 
-you need to install 
-before run you need, to modify loadtest.sh to replace token and destinationId token use admin. and destinationId,
-to get best result and find bootleneck you need to run this at least 4x times.
+you need to install [bombardier](https://github.com/codesenberg/bombardier) to run this
+
+and modify loadtest.sh to replace token and destinationId
+
+to get best result and find bootleneck you need to run at least 4x.
 
 
 ```sh
