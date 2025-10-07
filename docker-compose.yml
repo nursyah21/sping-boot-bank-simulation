@@ -30,8 +30,20 @@ services:
       - db_master
     volumes:
       - postgres_replica_data:/bitnami/postgresql
-
+  
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongodb
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongodb_data:/data/db
 
 volumes:
   postgres_master_data:
   postgres_replica_data:
+  mongodb_data:

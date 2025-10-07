@@ -1,13 +1,13 @@
 meta {
-  name: actuator
+  name: saveLog
   type: http
-  seq: 14
+  seq: 2
 }
 
 get {
-  url: {{base_url}}/actuator/health
+  url: {{base_url2}}/health
   body: none
-  auth: none
+  auth: inherit
 }
 
 settings {
