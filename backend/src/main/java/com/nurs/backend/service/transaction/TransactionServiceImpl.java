@@ -72,6 +72,7 @@ public class TransactionServiceImpl implements TransactionService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Page<TransactionResponse> getAllTransactions(
       UserDetails userDetails, Pageable pageable, String keyword) {
     val user = userRepository.findProfileDataByUsername(userDetails.getUsername())

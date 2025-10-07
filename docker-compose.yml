@@ -1,29 +1,35 @@
 services:
   db_master:
-    image: postgres:14-alpine
+    image: bitnami/postgresql:latest
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: test
+      - POSTGRESQL_REPLICATION_MODE=master
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_pass
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=password
+      - POSTGRESQL_DATABASE=test
     ports:
       - "5432:5432"
     volumes:
-      - postgres_master_data:/var/lib/postgresql
-  
+      - postgres_master_data:/bitnami/postgresql
+
   db_replica:
-    image: postgres:14-alpine
+    image: bitnami/postgresql:latest
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: test
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_pass
+      - POSTGRESQL_MASTER_HOST=db_master
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
+      - POSTGRESQL_PASSWORD=password
     ports:
       - "5433:5432"
-    volumes:
-      - postgres_replica_data:/var/lib/postgresql
     depends_on:
       - db_master
+    volumes:
+      - postgres_replica_data:/bitnami/postgresql
 
 
 volumes:

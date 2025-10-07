@@ -1,7 +1,6 @@
 package com.nurs.backend.config;
 
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import com.nurs.backend.dto.AuthRequest;
@@ -18,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-@DependsOn("flyway")
 public class AdminInitializer implements CommandLineRunner {
   private final UserRepository userRepository;
   private final AuthService authService;

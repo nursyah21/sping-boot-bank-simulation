@@ -38,6 +38,7 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public LoginResponse login(AuthRequest request) {
         try {
             authenticationManager.authenticate(
@@ -57,6 +58,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponse profile(UserDetails userDetails) {
         if (userDetails == null) {
             throw new CustomException("not authenticated");

@@ -88,6 +88,7 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public UserResponse getUserById(Long userId, Boolean isDeleted) {
     User user;
     if (Boolean.TRUE.equals(isDeleted)) {
@@ -112,6 +113,7 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Page<UserResponse> getAllUsers(Pageable pageable, String keyword, Boolean isdeleted) {
     Page<User> userPage;
 

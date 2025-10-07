@@ -22,13 +22,14 @@ public abstract class BaseModel {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false)
+  @Column(name = "is_deleted", nullable = false)
   private boolean isDeleted = false;
 
   @CreationTimestamp
-  @Column(nullable = false, updatable = false)
+  @Column(name = "created_at", nullable = false, updatable = false)
   private LocalDateTime createdAt;
 
   @UpdateTimestamp
+  @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 }

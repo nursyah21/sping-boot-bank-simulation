@@ -26,7 +26,7 @@ import lombok.EqualsAndHashCode;
 public class Account extends BaseModel {
     private BigDecimal balance = BigDecimal.ZERO;
 
-    @Column(unique = true)
+    @Column(name = "account_id", unique = true)
     @Length(max = 10, min = 10)
     private String accountId;
 

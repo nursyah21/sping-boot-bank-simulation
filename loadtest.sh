@@ -17,9 +17,9 @@
 # }'
 
 
-TOKEN="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1OTczMjg0MywiZXhwIjoxNzU5NzM2NDQzfQ.8mMWkrufzzYMexbs1rz9uohVIg7-f5ai6gPbMD1hIms"
-CONCURRENT=30
-DURATION=3m
+TOKEN="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1OTgxMjQ2NiwiZXhwIjoxNzU5ODE2MDY2fQ.gcoip2Zrb8e1dHuGbhsYoZOsyV4Roeab9WP8axnhLlg"
+CONCURRENT=10
+DURATION=30s
 
 # raw test check health (for warming up)
 bombardier -c ${CONCURRENT} -d ${DURATION} http://localhost:8000/api/actuator/health
@@ -27,10 +27,10 @@ bombardier -c ${CONCURRENT} -d ${DURATION} http://localhost:8000/api/actuator/he
 # read test database
 bombardier -H "Authorization: Bearer ${TOKEN}" -c ${CONCURRENT} -d ${DURATION}  http://localhost:8000/api/transaction
 
-# write test database
+# # write test database
 bombardier \
   -m POST \
-  -b '{"amount": "10000000", "destinationId": "4046132168"}' \
+  -b '{"amount": "10000000", "destinationId": "5613772273"}' \
   -H "Authorization: Bearer ${TOKEN}" \
   -H "Content-Type: application/json" \
   http://localhost:8000/api/transaction \
