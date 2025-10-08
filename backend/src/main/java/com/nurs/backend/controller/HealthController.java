@@ -1,17 +1,16 @@
 package com.nurs.backend.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.nurs.backend.dto.GenericResponse;
 
 @RestController
 @RequestMapping("/health")
 public class HealthController {
   
-  @GetMapping
-  public GenericResponse<Void> getHealth() {
-    return new GenericResponse<>("ok", null);
+  @GetMapping(produces = MediaType.TEXT_PLAIN_VALUE)
+  public String getHealth() {
+    return "ok";
   }
 }

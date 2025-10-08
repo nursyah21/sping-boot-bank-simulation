@@ -1,19 +1,19 @@
 meta {
-  name: loginUser
+  name: register
   type: http
   seq: 3
 }
 
 post {
-  url: {{base_url}}/auth/login
+  url: {{base_url}}/auth/register
   body: json
   auth: none
 }
 
 body:json {
   {
-    "username":"user",
-    "password":"password"
+    "username": "nursyah",
+    "password": "password"
   }
 }
 

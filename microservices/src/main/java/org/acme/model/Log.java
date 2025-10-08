@@ -11,7 +11,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @MongoEntity(collection = "logs")
 public class Log extends PanacheMongoEntity {
-  private Instant timestamp;
   private String message;
-  private Long userId;
+  private Instant timestamp = Instant.now();
 }

@@ -1,7 +1,12 @@
 package org.acme.service;
 
-import org.acme.dto.LogRequest;
+import java.util.List;
+
+import org.acme.model.Log;
+
 
 public interface LogService {
-  void saveLog(LogRequest request);
+  void saveLog(String message);
+  List<Log> getLogsPaged(int page, int size);
+  Long totalLogs();
 }

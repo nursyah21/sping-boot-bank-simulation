@@ -63,12 +63,11 @@ public class TransactionServiceImpl implements TransactionService {
     transactionRepository.save(transaction);
 
     return new TransactionResponse(
-      request.getAmount(), 
-      transaction.getId(), 
-      transaction.getSourceAccount().getAccountId(), 
-      transaction.getDestinationAccount().getAccountId(),
-      transaction.getCreatedAt()
-    );
+        request.getAmount(),
+        transaction.getId(),
+        transaction.getSourceAccount().getAccountId(),
+        transaction.getDestinationAccount().getAccountId(),
+        transaction.getCreatedAt());
   }
 
   @Override
@@ -80,19 +79,19 @@ public class TransactionServiceImpl implements TransactionService {
 
     val isAdmin = user.getRoles().stream()
         .anyMatch(role -> "ADMIN".equalsIgnoreCase(role.getName()));
-    
+
     Page<Transaction> pageTransaction;
-    
+
     val hasKeyword = keyword != null && !keyword.isBlank();
 
     if (isAdmin) {
-      if(hasKeyword) {
+      if (hasKeyword) {
         pageTransaction = transactionRepository.searchByAdmin(keyword, pageable);
       } else {
         pageTransaction = transactionRepository.searchByAdmin(pageable);
       }
     } else {
-      if(hasKeyword) {
+      if (hasKeyword) {
         pageTransaction = transactionRepository.searchByAccountId(keyword, pageable, user.getAccount().getAccountId());
       } else {
         pageTransaction = transactionRepository.searchByAccountId(pageable, user.getAccount().getAccountId());
@@ -101,11 +100,11 @@ public class TransactionServiceImpl implements TransactionService {
 
     return pageTransaction.map(transaction -> {
       return new TransactionResponse(
-        transaction.getAmount(), 
-        transaction.getId(), 
-        transaction.getSourceAccount().getAccountId(), 
-        transaction.getDestinationAccount().getAccountId(),
-        transaction.getCreatedAt());
+          transaction.getAmount(),
+          transaction.getId(),
+          transaction.getSourceAccount().getAccountId(),
+          transaction.getDestinationAccount().getAccountId(),
+          transaction.getCreatedAt());
     });
   }
 }

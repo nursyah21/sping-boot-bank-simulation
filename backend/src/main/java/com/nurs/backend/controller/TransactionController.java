@@ -1,5 +1,7 @@
 package com.nurs.backend.controller;
 
+import java.time.Instant;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,19 +17,23 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nurs.backend.dto.GenericResponse;
+import com.nurs.backend.dto.PublishMessage;
 import com.nurs.backend.dto.TransactionRequest;
 import com.nurs.backend.dto.TransactionResponse;
 import com.nurs.backend.model.User;
+import com.nurs.backend.service.messaging.PublisherService;
 import com.nurs.backend.service.transaction.TransactionService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/transaction")
 public class TransactionController {
   private final TransactionService transactionService;
+  private final PublisherService publisherService;
 
   @GetMapping
   public GenericResponse<Page<TransactionResponse>> getAllTransactions(
@@ -46,11 +52,19 @@ public class TransactionController {
   public GenericResponse<TransactionResponse> TransferMoney(
     @Valid @RequestBody TransactionRequest request,
     @AuthenticationPrincipal User userDetails
-  ) {
+    ) {
+    val result = transactionService.transferMoney(request, userDetails);
+    publisherService.publishLog(
+      new PublishMessage(
+        "transaction", 
+        "transfer", 
+        String.format("amount=%s, destinationId=%s, username=%s",
+          request.getAmount(), request.getDestinationId(), userDetails.getUsername()),
+        Instant.now()).toString()
+    );
 
     return new GenericResponse<>(
-      "transfer money success", 
-      transactionService.transferMoney(request, userDetails)
+      "transfer money success", result
     );
   }
 }

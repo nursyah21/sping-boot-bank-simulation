@@ -1,0 +1,27 @@
+meta {
+  name: account
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/admin/account?isDeleted=false
+  body: none
+  auth: bearer
+}
+
+params:query {
+  isDeleted: false
+  ~size: 
+  ~keyword: 
+  ~page: 1
+  ~sort: id
+}
+
+auth:bearer {
+  token: {{secret}}
+}
+
+settings {
+  encodeUrl: true
+}

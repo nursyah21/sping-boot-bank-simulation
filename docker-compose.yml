@@ -42,6 +42,17 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - mongodb_data:/data/db
+  
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"  # PORT AMQP
+      - "15672:15672" # PORT UI
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: password
 
 volumes:
   postgres_master_data:
