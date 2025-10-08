@@ -1,72 +1,47 @@
-# Bank Simulasi Spring Boot + NextJS
+# Microservices Bank Simulasi Spring Boot + Quarkus
 
-Portfolio project to showcase spring boot and nextjs
+> Microservices Bank Simulation – A showcase of modern microservices architecture using Spring Boot, Quarkus, RabbitMQ, PostgreSQL, and MongoDB.
 
 ### Tech Stack
 
 - Spring Boot
+- Quarkus
+- RabbitMQ
 - NextJS
 - Postgresql
+- MongoDB
+
+### System Architecture
+
+![image](/images/system-architecture.png)
 
 ### Feature
 
 - Rate Limiter in login
 - Role Based Access Control (Admin, User)
 - Soft Delete (Admin can Deactivating Account User)
-- Actuator (For monitoring backend spring boot)
 - Pagination, Search and Sort
 - Fast path / Slow path (under 100ms when without search)
 - Unit testing for AccountID Generator
 - Load testing pass (no memory leak)
+- Read Write Database (to ensure no degrade performance when data is high)
+- Microservices with rabbitmq for storing log transaction
 
 ### Behind Scene
-this project initially from [https://github.com/nursyah21/bank-dotnet-java](https://github.com/nursyah21/bank-dotnet-java) but i stopped it, why?
+this project is next version of [spring-boot-simulation](https://github.com/nursyah21/spring-boot-bank-simulation) 
 
-I initially prioritized rigid planning (OpenAPI, Schema, strict DDD) and multi-platform development (Dotnet/Java). I learned that this approach created severe bottlenecks:
-
-1. Rigidity and Rework
-Designed the entire OpenAPI schema and database structure upfront, resulted in designs that inevitably had flaws once I started coding.
-
-I found that every necessary change required time-consuming and inefficient rework across all the rigid schema documents.
-
-2. Cognitive Overhead and Fragmentation
-I spent too much effort on Domain-Driven Design (DDD) dogma, often resulting in agonizing over service names and placing single files into dedicated domain folders.
-
-I realized this over-organization shifted my focus from solving business problems to solving architectural structure problems, adding unnecessary cognitive burden.
-
-3. Inefficiency of Incremental Churn
-I found the forced incremental approach required me to constantly refactor stable code. For example, building a feature without the database first, then completely rewriting the code to integrate the DB, created code churn in every iteration.
-
-I learned it's more efficient to focus on delivering one complete, perfectly working service first, and then simply adapting that proven structure for all subsequent services.
-
-4. Code Switching Penalty
-I developed simultaneously in Dotnet and Java, which inflicted a high cognitive switching cost.
-
-I found this constant context-switching reduced my focus and caused me to frequently forget implementation details from one platform when working on the other.
-
-### After one week, I shifted my focus to a pragmatic and speed oriented 
+the problem with previous version 
+1. when a transaction have massive traffic, performance read drop significant 
+2. not have log services
 
 
-1. Tech Stack & Priority
-I chose Next.js and Spring Boot as the core technologies, prioritizing career alignment due to their popularity and high demand in the enterprise world.
+to fix this problem, we create
+1. master-slave database (fix performance read)
+2. microservices for log (ensure primary service not have performance drop)
 
-Given my initial lack of experience with Spring Boot, I began with a focused learning sprint to master fundamentals (REST APIs, database connection, authentication) before starting the main project.
+### Possible Improvement
 
-2. Methodology Change
-I immediately abandoned the strict Domain-Driven Design (DDD) approach.
-
-I adopted a pragmatic architecture, grouping files simply by type (Controller, Service, Repository) for maximum clarity and speed.
-
-3. My new priority was Minimum Viable Product (MVP) and delivery speed, leading me to severely limit the project’s initial scope.
-
-Result
-This focused strategy allowed me to successfully complete the entire  project in just 10 days.
-
-### Future Work
-
-- Caching with redis
-- Read Write split database
-- Logging
+- High Availability setup with Eureka for service discovery and clustering.
 
 ### Project Structure
 ```
@@ -76,13 +51,22 @@ This focused strategy allowed me to successfully complete the entire  project in
     - controller/      # REST API endpoints
     - dto/             # Data Transfer Objects
     - exception/       # Custom Exception
-    - model/           # JPA Entitie
+    - model/           # JPA Entitiy
+    - repository/      # Spring Data JPA interfaces
+    - service/         # Business Logic
+  - src/main/resources/ # application.properties
+- microservices
+  - src/main/java/com/nurs/backend/
+    - config/          # Security, Rate Limiter
+    - controller/      # REST API endpoints
+    - messaging/       # Consume Message From Rabbitmq
+    - dto/             # Data Transfer Objects
+    - model/           # JPA Entitiy
     - repository/      # Spring Data JPA interfaces
     - service/         # Business Logic
   - src/main/resources/ # application.properties
 - frontend
 - bruno                # Folder bruno app for Api testing
-- actuator
 - docker-compose.yml
 ```
 
@@ -92,43 +76,49 @@ This focused strategy allowed me to successfully complete the entire  project in
 ![image](/images/home.png)
 ![image](/images/transaction.png)
 ![image](/images/account.png)
-![image](/images/loadtest-first-iteration.png)
-![image](/images/loadtest-forth-iteration.png)
+![image](/images/loadtest.png)
 
-result load test 30connection in 3minutes (first iteration vs forth iteration)
-- raw health: from 67k req/s -> 83k req/s 
-- write test: from 8k req/s -> 12k req/s
-- write test (rate error): 5 timeout 0.06% -> 0 timeout 0%
-- read test: from 18k req/s -> 5k req/s (anomaly)
+result load test 60connection in 1minutes (after several iteration).
 
-from this result, we already achive best result because for next iteration result raw health and write test is a same. 
-but for read test, the result degrade almost like half, every each iteration. this is need future work, **read-write split database**
+it have stabil result,
+
+| Operation       | Avg Response |Notes                |
+| -------         | ------------ | -----               |
+| Spring Boot raw | ~7ms         | health check        |
+| Quarkus raw     | ~2ms         | health check        |
+| Read            | ~570ms       | with DB replication |
+| Write           | ~735ms       | with DB master      |
+
+### Requirements
+- Java 17+
+- NodeJS 24+
+- Docker & Docker Compose
 
 ### how to run
 
-For Information i use, java 17 and node 24 to run this program. while we can use docker to simplify. i find this method more reliable. because i notice bug like my backend cant connect to database if i use docker.
-you need to run this in sequence, because backend depends on actuator and database, and frontend depends on backend
-
-1. run database.
+1. run 3 database and rabbitmq.
 ```sh
 docker compose up -d
 ```
 
-2. run actuator
-```sh
-cd actuator
-./mvnw clean package
-java -jar target/actuator-0.0.1-SNAPSHOT.jar
-```
+2. run backend spring boot
 
-3. run backend
 ```sh
 cd backend
 ./mvnw clean package
-java -jar target/backend-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
+java -jar target/backend-0.1.0-SNAPSHOT.jar --spring.profiles.active=prod
 ```
 
-4. run frontend
+3. run backend quarkus
+```sh
+cd microservices
+./mvnw clean package
+java -jar target/quarkus-app/quarkus-run.jar
+```
+
+if you only need to test backend, you can use app bruno and open folder bruno.
+
+4. run frontend (optional)
 ```sh
 cd frontend
 npm install
@@ -136,14 +126,15 @@ npm run lint
 npm run start
 ```
 
-5. run load testing 
+5. run load testing (optional)
 
 you need to install [bombardier](https://github.com/codesenberg/bombardier) to run this
 
-and modify loadtest.sh to replace token and destinationId
+and modify [loadtest.sh](./loadtest.sh) to replace token and destinationId
 
-to get best result and find bootleneck you need to run at least 4x.
+to get best result and find bottleneck you need to run at least 4x. 
 
+you will get bias result if you run loadtest in same device with your services
 
 ```sh
 sh loadtest.sh

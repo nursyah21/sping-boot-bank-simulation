@@ -17,12 +17,15 @@
 # }'
 
 
-TOKEN="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1OTgxMjQ2NiwiZXhwIjoxNzU5ODE2MDY2fQ.gcoip2Zrb8e1dHuGbhsYoZOsyV4Roeab9WP8axnhLlg"
-CONCURRENT=10
-DURATION=30s
+TOKEN="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1OTkwNzg4OCwiZXhwIjoxNzU5OTExNDg4fQ.GL_l30iyIeDRoJd1VWvY-tej3PciHSd2ye2IV_wn6J4"
+CONCURRENT=60
+DURATION=1m
 
-# raw test check health (for warming up)
-bombardier -c ${CONCURRENT} -d ${DURATION} http://localhost:8000/api/actuator/health
+# raw test check health springboot (for warming up)
+bombardier -c ${CONCURRENT}  -d ${DURATION} http://localhost:8000/api/health
+
+# raw test check health quarkus (for warming up)
+bombardier -c ${CONCURRENT} -d ${DURATION} http://localhost:8001/api/health
 
 # read test database
 bombardier -H "Authorization: Bearer ${TOKEN}" -c ${CONCURRENT} -d ${DURATION}  http://localhost:8000/api/transaction
@@ -30,7 +33,7 @@ bombardier -H "Authorization: Bearer ${TOKEN}" -c ${CONCURRENT} -d ${DURATION}  
 # # write test database
 bombardier \
   -m POST \
-  -b '{"amount": "10000000", "destinationId": "5613772273"}' \
+  -b '{"amount": "10000000", "destinationId": "3621891983"}' \
   -H "Authorization: Bearer ${TOKEN}" \
   -H "Content-Type: application/json" \
   http://localhost:8000/api/transaction \
