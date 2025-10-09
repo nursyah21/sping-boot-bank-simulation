@@ -64,9 +64,10 @@ This focused strategy allowed me to successfully complete the entire  project in
 
 ### Future Work
 
-- Caching with redis
 - Read Write split database
 - Logging
+
+you can find how i implement future work in [this](https://github.com/nursyah21/spring-boot-bank-simulation/tree/v0.1.0)
 
 ### Project Structure
 ```
